@@ -6,9 +6,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useFontSize } from "@/contexts/FontSizeContext";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
+import { ClinicianModal } from "@/components/ClinicianModal";
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showClinicianModal, setShowClinicianModal] = useState(false);
   const { scheme, preference, setPreference } = useColorScheme();
   const isLight = scheme === 'light';
   const { fontSize, setFontSize } = useFontSize();
@@ -411,6 +413,26 @@ export default function Home() {
                                     </svg>
                                 </Link>
                             </div>
+
+                            {/* Button 3: Use as a clinician — tertiary */}
+                            <button
+                                onClick={() => setShowClinicianModal(true)}
+                                className={`flex items-center justify-between w-full py-4 px-6 rounded-[10px] border transition-all focus:outline-none group/clinician ${
+                                    isLight 
+                                        ? 'border-slate-200 bg-transparent hover:bg-slate-50 text-slate-600 hover:text-slate-900' 
+                                        : 'border-white/10 bg-transparent hover:bg-white/5 text-slate-400 hover:text-slate-200'
+                                }`}
+                            >
+                                <span className="flex items-center gap-2 font-medium text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 opacity-70">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                    </svg>
+                                    Use as a clinician
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 transition-transform group-hover/clinician:translate-x-1">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>{/* end card hover div */}
@@ -454,6 +476,10 @@ export default function Home() {
             
           </main>
       </div>
+
+      {showClinicianModal && (
+        <ClinicianModal onClose={() => setShowClinicianModal(false)} />
+      )}
     </>
   );
 }

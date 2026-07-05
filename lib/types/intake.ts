@@ -1,4 +1,4 @@
-export type UserRole = 'user' | 'caregiver';
+export type UserRole = 'user' | 'caregiver' | 'clinician';
 export type ResponseStyle = 'concise' | 'balanced' | 'verbose';
 export type UserIntent = 'trial_matching' | 'learn_about_trials' | 'learn_about_alzheimer';
 

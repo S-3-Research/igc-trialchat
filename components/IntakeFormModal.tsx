@@ -189,6 +189,18 @@ export function IntakeFormModal({ onComplete, onSkip }: IntakeFormModalProps) {
                   I&apos;m helping someone else find information
                 </div>
               </button>
+
+              <button
+                onClick={() => handleRoleSelect('clinician')}
+                className="w-full p-4 text-left rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group"
+              >
+                <div className="font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  As a clinician
+                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  I&apos;m a healthcare professional seeking clinical information
+                </div>
+              </button>
             </div>
 
             <div className="flex gap-4">

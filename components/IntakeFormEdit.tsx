@@ -83,6 +83,26 @@ export function IntakeFormEdit({ initialData, onSave, onCancel, isSaving = false
               I&apos;m helping someone else to find information
             </div>
           </button>
+
+          <button
+            onClick={() => setRole('clinician')}
+            className={`w-full p-4 text-left rounded-xl border-2 transition-all ${
+              role === 'clinician'
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600'
+            }`}
+          >
+            <div className={`font-medium ${
+              role === 'clinician'
+                ? 'text-blue-600 dark:text-blue-400'
+                : 'text-gray-900 dark:text-white'
+            }`}>
+              As a clinician
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              I&apos;m a healthcare professional seeking clinical information
+            </div>
+          </button>
         </div>
       </div>
 

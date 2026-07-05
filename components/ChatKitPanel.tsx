@@ -21,6 +21,7 @@ import { useVoiceInputMode } from "@/contexts/VoiceInputModeContext";
 import { correctMedicalTerms } from "@/lib/medicalTermsCorrection";
 import { MatchProfileModal } from "./MatchProfileModal";
 import type { MatchProfile } from "./MatchProfileModal";
+import { ClinicianModal } from "./ClinicianModal";
 
 export type FactAction = {
   type: "save";
@@ -88,6 +89,7 @@ export function ChatKitPanel({
   const [isOverlayFadingOut, setIsOverlayFadingOut] = useState(false); // Triggers CSS fade before DOM removal
   const [intakeData, setIntakeData] = useState<IntakeData | null>(null);
   const [showMatchModal, setShowMatchModal] = useState(false);
+  const [showClinicianModal, setShowClinicianModal] = useState(false);
   const isMountedRef = useRef(true);
   const markContentReadyRef = useRef<((extraDelay?: number) => void) | null>(null);
   const [scriptStatus, setScriptStatus] = useState<
@@ -842,6 +844,25 @@ export function ChatKitPanel({
     }
   }, [autoOpenMatch, chatkit.control, isInitializingSession]);
 
+  // Auto-send clinician pre-screen message when chatkit becomes ready
+  const autoClinicianFiredRef = useRef(false);
+  useEffect(() => {
+    if (!chatkit.control || isInitializingSession || autoClinicianFiredRef.current) return;
+    if (!isBrowser) return;
+    const message = sessionStorage.getItem('clinician_prescreen_prompt');
+    if (!message) return;
+    autoClinicianFiredRef.current = true;
+    sessionStorage.removeItem('clinician_prescreen_prompt');
+    setTimeout(async () => {
+      try {
+        await chatkit.sendUserMessage({ text: message });
+      } catch (err) {
+        console.error('[ChatKitPanel] Clinician pre-screen send failed:', err);
+      }
+    }, 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatkit.control, isInitializingSession]);
+
   // Note: Intake context is now passed via workflow.state_variables during session creation
   // See /app/api/create-session/route.ts for implementation
 
@@ -904,14 +925,16 @@ export function ChatKitPanel({
         <span className="text-sm font-semibold text-slate-600 dark:text-slate-300">Chat Panel</span>
         <div className="shimmer-border-btn-pill transition-transform hover:scale-105 active:scale-95 shadow-md shadow-blue-500/20">
           <button
-            onClick={() => setShowMatchModal(true)}
+            onClick={() => intakeData?.role === 'clinician' ? setShowClinicianModal(true) : setShowMatchModal(true)}
             className="flex items-center justify-center gap-1.5 h-9 px-4 rounded-full bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm focus:outline-none"
-            aria-label="Find matching clinical trials"
+            aria-label={intakeData?.role === 'clinician' ? 'Screen a client for clinical trials' : 'Find matching clinical trials'}
           >
             <svg className="w-4 h-4 text-blue-600 fill-current" viewBox="0 0 24 24">
               <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
-            <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">Match me to trials</span>
+            <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
+              {intakeData?.role === 'clinician' ? 'Screen a client' : 'Find matching trials'}
+            </span>
           </button>
         </div>
       </div>
@@ -964,14 +987,16 @@ export function ChatKitPanel({
       {/* ── Desktop only: Match button floating top-center ── */}
       <div className="hidden md:block absolute top-2.5 left-1/2 -translate-x-1/2 z-20 pointer-events-auto shimmer-border-btn-pill transition-transform hover:scale-105 active:scale-95 shadow-xl shadow-blue-500/40">
         <button
-          onClick={() => setShowMatchModal(true)}
+          onClick={() => intakeData?.role === 'clinician' ? setShowClinicianModal(true) : setShowMatchModal(true)}
           className="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-base focus:outline-none select-none"
-          aria-label="Find matching clinical trials"
+          aria-label={intakeData?.role === 'clinician' ? 'Screen a client for clinical trials' : 'Find matching clinical trials'}
         >
           <svg className="w-[18px] h-[18px] text-blue-600 fill-current" viewBox="0 0 24 24">
             <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
           </svg>
-          <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">Match me to trials</span>
+          <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
+            {intakeData?.role === 'clinician' ? 'Screen a client' : 'Find matching trials'}
+          </span>
         </button>
       </div>
 
@@ -989,6 +1014,24 @@ export function ChatKitPanel({
             }
           }}
           onClose={() => setShowMatchModal(false)}
+        />
+      )}
+
+      {/* Clinician Client Screen Modal */}
+      {showClinicianModal && (
+        <ClinicianModal
+          initialStep="prescreen"
+          onConfirm={async (message: string) => {
+            setShowClinicianModal(false);
+            if (chatkit.control) {
+              try {
+                await chatkit.sendUserMessage({ text: message });
+              } catch (err) {
+                console.error("[ClinicianModal] sendUserMessage failed:", err);
+              }
+            }
+          }}
+          onClose={() => setShowClinicianModal(false)}
         />
       )}
       

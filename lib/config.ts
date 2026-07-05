@@ -120,6 +120,63 @@ const LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
+// Starter prompts for clinicians — learn about ADRD trials
+const CLINICIAN_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
+  {
+    label: "Explain common ADRD trial eligibility criteria",
+    prompt: "Explain common ADRD trial eligibility criteria",
+    icon: "notebook",
+  },
+  {
+    label: "What should clinicians know about risks and benefits of trials?",
+    prompt: "What should clinicians know about risks and benefits of trials?",
+    icon: "circle-question",
+  },
+  {
+    label: "How do I discuss clinical trials with clients?",
+    prompt: "How do I discuss clinical trials with clients?",
+    icon: "search",
+  },
+];
+
+// Starter prompts for clinicians — trial matching / client pre-screen
+const CLINICIAN_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
+  {
+    label: "Help me pre-screen a client for ADRD trials",
+    prompt: "Help me pre-screen a client for ADRD trials",
+    icon: "search",
+  },
+  {
+    label: "What key eligibility factors matter most for ADRD trials?",
+    prompt: "What key eligibility factors matter most for ADRD trials?",
+    icon: "notebook",
+  },
+  {
+    label: "Identify potential trials based on a basic client profile",
+    prompt: "Identify potential trials based on a basic client profile",
+    icon: "circle-question",
+  },
+];
+
+// Starter prompts for clinicians — learn about Alzheimer's disease
+const CLINICIAN_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+  {
+    label: "Summarize ADRD for clinical discussion",
+    prompt: "Summarize ADRD for clinical discussion",
+    icon: "circle-question",
+  },
+  {
+    label: "What are the stages of Alzheimer's disease?",
+    prompt: "What are the stages of Alzheimer's disease?",
+    icon: "notebook",
+  },
+  {
+    label: "What recent research updates are relevant for clinicians?",
+    prompt: "What recent research updates are relevant for clinicians?",
+    icon: "search",
+  },
+];
+
 // Greetings based on intent and role
 const GREETINGS = {
   trial_matching_user: "Welcome to TrialChat! I'm here to help you find clinical trials that match your needs. Let's get started!",
@@ -129,6 +186,10 @@ const GREETINGS = {
   learn_about_alzheimer_user: "Welcome to TrialChat! I'm here to help you learn about Alzheimer's disease. What would you like to know?",
   learn_about_alzheimer_caregiver: "Welcome to TrialChat! I'm here to help you learn about Alzheimer's disease for someone you care for. What can I explain?",
   default: "Welcome to TrialChat! I'm here to help you navigate Alzheimer's disease clinical trials. How can I assist you today?",
+  clinician_trial_matching: "Welcome to TrialChat. I can help you pre-screen a client for potential ADRD clinical trial matches. Please provide non-identifying clinical details.",
+  clinician_learn_about_trials: "I can help explain ADRD clinical trials, eligibility criteria, risks and benefits, and referral considerations in clinician-friendly language.",
+  clinician_learn_about_alzheimer: "I can help summarize Alzheimer's disease and related dementias for clinical context, including progression, symptoms, and research updates.",
+  clinician_default: "Welcome to TrialChat. I can help clinicians understand ADRD clinical trials, eligibility criteria, and support client pre-screening. How can I assist?",
 };
 
 // Helper function to get starter prompts based on user preferences
@@ -138,6 +199,14 @@ export const getStarterPromptsForUser = (intakeData: IntakeData | null): StartSc
   }
 
   const { intent, role } = intakeData;
+
+  // Clinician role — use clinician-specific prompts regardless of intent
+  if (role === 'clinician') {
+    if (intent === 'learn_about_trials') return CLINICIAN_LEARN_TRIALS_PROMPTS;
+    if (intent === 'trial_matching') return CLINICIAN_TRIAL_MATCHING_PROMPTS;
+    if (intent === 'learn_about_alzheimer') return CLINICIAN_LEARN_ALZHEIMER_PROMPTS;
+    return CLINICIAN_LEARN_TRIALS_PROMPTS; // default for clinician
+  }
 
   // intent is the primary signal; null role falls back to user perspective
   if (intent === 'trial_matching') {
@@ -175,6 +244,14 @@ export const getGreetingForUser = (intakeData: IntakeData | null): string => {
   }
 
   const { intent, role } = intakeData;
+
+  // Clinician role — use clinician-specific greetings
+  if (role === 'clinician') {
+    if (intent === 'trial_matching') return GREETINGS.clinician_trial_matching;
+    if (intent === 'learn_about_trials') return GREETINGS.clinician_learn_about_trials;
+    if (intent === 'learn_about_alzheimer') return GREETINGS.clinician_learn_about_alzheimer;
+    return GREETINGS.clinician_default;
+  }
 
   // Both known — use specific greeting
   if (intent && role) {
