@@ -168,7 +168,7 @@ export default function App({ skipIntake = false, autoOpenMatch = false }: AppPr
     };
 
     checkIntakeStatus();
-  }, [isLoaded, isSignedIn, isMigratingIntake]);
+  }, [isLoaded, isSignedIn, isMigratingIntake, skipIntake]);
 
   const handleWidgetAction = useCallback(async (action: FactAction) => {
     if (process.env.NODE_ENV !== "production") {

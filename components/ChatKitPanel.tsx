@@ -4,9 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChatKit, useChatKit } from "@openai/chatkit-react";
 import { useUser } from "@clerk/nextjs";
 import {
-  STARTER_PROMPTS,
   PLACEHOLDER_INPUT,
-  GREETING,
   CREATE_SESSION_ENDPOINT,
   WORKFLOW_ID,
   getThemeConfig,
@@ -365,7 +363,7 @@ export function ChatKitPanel({
         }
       }
     },
-    [isWorkflowConfigured, setErrorState]
+    [isSignedIn, isWorkflowConfigured, setErrorState]
   );
 
   const baseSize = fontSize === "small" ? 14 : fontSize === "large" ? 18 : 16;

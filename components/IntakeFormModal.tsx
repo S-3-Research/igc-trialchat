@@ -13,7 +13,7 @@ export function IntakeFormModal({ onComplete, onSkip }: IntakeFormModalProps) {
   const [step, setStep] = useState(1);
   const [intent, setIntent] = useState<UserIntent | null>('learn_about_alzheimer');
   const [role, setRole] = useState<UserRole | null>('user');
-  const [responseStyle, setResponseStyle] = useState<ResponseStyle | null>('balanced');
+  const [responseStyle] = useState<ResponseStyle | null>('balanced');
 
   // Check if user has already completed intake
   useEffect(() => {

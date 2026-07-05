@@ -20,7 +20,6 @@ import {
   Play,
   Square,
   CheckSquare,
-  XSquare,
   MinusSquare,
   X,
   PanelRightClose,
@@ -391,7 +390,7 @@ const TestSession = React.memo(function TestSession({
       }
     }, 240_000);
     return () => clearTimeout(timeout);
-  }, [onComplete]);
+  }, [onComplete, testCase.id]);
 
   return (
     <div

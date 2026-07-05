@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useFontSize } from "@/contexts/FontSizeContext";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
 
@@ -159,11 +160,13 @@ export default function Home() {
             
             {/* 1. Background Image Layer with Cinematic Blur */}
             <div className="absolute inset-0 z-0">
-                <img 
-                    // src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop" 
+                <Image
                     src="/images/landing_bg_female_2.jpg"
-                    alt="Background Ambience" 
-                    className={`w-full h-full object-cover transition-opacity duration-500 ${isLight ? 'opacity-100 mix-blend-luminosity' : 'opacity-100 mix-blend-overlay'}`}
+                    alt="Background Ambience"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className={`object-cover transition-opacity duration-500 ${isLight ? 'opacity-100 mix-blend-luminosity' : 'opacity-100 mix-blend-overlay'}`}
                     style={{ objectPosition: '50% 20%' }}
                 />
                 {/* Gradient overlays */}

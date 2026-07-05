@@ -26,7 +26,7 @@ export async function verifyPassword(
 
     const data = await response.json();
     return data;
-  } catch (error) {
+  } catch {
     return { success: false, error: 'Network error' };
   }
 }
@@ -64,7 +64,7 @@ export async function isDemoUnlocked(demoId: DemoId): Promise<boolean> {
     const response = await fetch(`/api/demo-auth?demoId=${demoId}`);
     const data = await response.json();
     return data.unlocked ?? false;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

@@ -206,7 +206,7 @@ export function ChatV1Panel({ theme }: ChatV1PanelProps) {
 
     setIntakeCompleted(true);
     setShowIntakeModal(false);
-  }, [isSignedIn]);
+  }, [isEditingPreferences, isSignedIn]);
 
   const handleIntakeSkip = useCallback(() => {
     console.log("[ChatV1Panel] Intake skipped");
@@ -248,7 +248,7 @@ export function ChatV1Panel({ theme }: ChatV1PanelProps) {
   const shouldShowChat = isSignedIn || intakeCompleted;
 
   return (
-    <div className="flex h-full flex-col rounded-2xl bg-white shadow-sm dark:bg-slate-900 overflow-hidden">
+    <div data-theme={theme} className="flex h-full flex-col rounded-2xl bg-white shadow-sm dark:bg-slate-900 overflow-hidden">
       {/* Intake Modal */}
       {showIntakeModal && (
         <IntakeFormModal

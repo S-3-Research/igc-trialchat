@@ -17,8 +17,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const clerkPublishableKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+    "pk_test_ZXhhbXBsZS5jbGVyay5hY2NvdW50cy5kZXYk";
+
   return (
     <ClerkProvider
+      publishableKey={clerkPublishableKey}
       afterSignOutUrl="/"
     >
       <html lang="en" className="text-base">

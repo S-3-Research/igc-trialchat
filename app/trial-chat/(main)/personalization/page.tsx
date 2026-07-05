@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 
 interface UserProfile {
@@ -29,7 +28,6 @@ interface UserProfile {
 
 export default function PersonalizationPage() {
   const { user, isLoaded } = useUser();
-  const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -59,13 +57,7 @@ export default function PersonalizationPage() {
     }
   }, [isLoaded, user]);
 
-  useEffect(() => {
-    if (user) {
-      loadProfile();
-    }
-  }, [user]);
-
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     try {
       const response = await fetch("/api/profile");
       const data = await response.json();
@@ -90,7 +82,13 @@ export default function PersonalizationPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadProfile();
+    }
+  }, [user, loadProfile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
