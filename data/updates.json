@@ -1,0 +1,154 @@
+{
+  "latestUpdates": [
+    {
+      "version": "v1.0.0",
+      "date": "March 31, 2026",
+      "title": "Landing Page Visual Overhaul & Match Flow Polish",
+      "isLatest": true,
+      "items": [
+        "Added cinematic entrance animations with staggered fade-in-up effects on landing page",
+        "New ambient light beam background element for depth and atmosphere",
+        "3D tilt card interaction on feature cards for immersive feel",
+        "Redesigned Match Profile Modal with improved layout and copy",
+        "Header controls polish: improved spacing, icon sizing, and dark/light transitions",
+        "Fixed unescaped JSX entities causing production build failures"
+      ]
+    },
+    {
+      "version": "v0.9.0",
+      "date": "March 28, 2026",
+      "title": "Trial Match Flow & MatchProfileModal",
+      "isLatest": false,
+      "items": [
+        "Added 'Match me to Trials' CTA button on landing page",
+        "Implemented MatchProfileModal for collecting patient profile before trial matching",
+        "Skip-intake flow: users can jump straight to trial matching with ?skip_intake=1&open_match=1",
+        "Modal collects age, diagnosis, location and sends user directly to matched trials"
+      ]
+    },
+    {
+      "version": "v0.8.0",
+      "date": "March 20, 2026",
+      "title": "UI Polish, Animations & Dev Test Improvements",
+      "isLatest": false,
+      "items": [
+        "Landing page glassmorphism card hover lift animation",
+        "Improved light/dark mode transition smoothness across all components",
+        "Session Test Runner page UI/UX overhaul with cleaner layout",
+        "Fixed sendUserMessage race condition using advanceTimerRef debounce",
+        "Pagination support for clinical trials search results",
+        "API robustness improvements: raw clinical trials response handling, undefined payload guards"
+      ]
+    },
+    {
+      "version": "v0.7.0",
+      "date": "March 5, 2026",
+      "title": "Clinical Trials Search Pagination & API Robustness",
+      "isLatest": false,
+      "items": [
+        "Added pagination support for clinical trials search tool",
+        "Improved API error handling against undefined or malformed upstream payloads",
+        "Updated copyright year to 2026",
+        "Added automated chat session test runner with dataset support",
+        "Test history page at /dev-test/history for reviewing past test runs"
+      ]
+    },
+    {
+      "version": "v0.6.0",
+      "date": "February 5, 2026",
+      "title": "Dynamic Personalization & Complete UI Redesign",
+      "isLatest": false,
+      "items": [
+        "Personalized starting questions based on user intent (trial matching vs. learning)",
+        "Dynamic greetings adapted to user role (patient vs. caregiver)",
+        "4 distinct sets of starter prompts for different user profiles",
+        "Complete homepage visual redesign with cinematic glass morphism aesthetic",
+        "Enhanced glassmorphism effects with backdrop blur and gradient overlays",
+        "Redesigned feature cards with hover animations and improved iconography",
+        "Optimized responsive layout for all screen sizes (mobile, tablet, desktop)",
+        "Interactive mobile navigation with full-screen overlay menu",
+        "Improved typography hierarchy and brand consistency across all breakpoints",
+        "Better visual hierarchy with noise textures and decorative grid lines"
+      ]
+    },
+    {
+      "version": "v0.5.0",
+      "date": "January 28, 2026",
+      "title": "Voice Input Enhancements & User Feedback",
+      "isLatest": false,
+      "items": [
+        "Added dual voice input modes: Web Speech API and OpenAI Whisper",
+        "Voice input mode selector in header (switch between free real-time and accurate paid options)",
+        "OpenAI Whisper integration with auto language detection (Chinese/English)",
+        "Voice input comparison test page at /voice-test",
+        "Recording timer and processing indicators for Whisper mode",
+        "Enabled feedback buttons (thumbs up/down) for AI responses",
+        "Enabled retry button for regenerating AI responses",
+        "Fixed voice button container blocking input field interaction"
+      ]
+    },
+    {
+      "version": "v0.4.0",
+      "date": "January 26, 2026",
+      "title": "Voice Input for Enhanced Accessibility",
+      "isLatest": false,
+      "items": [
+        "Added voice input button with Web Speech API integration",
+        "Real-time speech-to-text with interim results display",
+        "Automatic medical terminology correction (Alzheimer's, dementia, MCI, etc.)",
+        "36x36px white circular button with blue/red color states",
+        "Responsive layout with fixed width breakpoints (575px, 768px)",
+        "Visual feedback with pulsing animation and success/error toasts",
+        "Positioned to overlay ChatKit's compose area seamlessly"
+      ]
+    },
+    {
+      "version": "v0.3.0",
+      "date": "January 23, 2026",
+      "title": "User Personalization & Profile Management",
+      "isLatest": false,
+      "items": [
+        "Added Personalization menu item in Clerk UserButton dropdown",
+        "Created comprehensive profile management page at /personalization",
+        "Implemented API routes for viewing, updating, and deleting user profiles",
+        "Profile data stored in Supabase including health info, caregiver status, and location preferences",
+        "Full support for ADRD diagnosis tracking and mobility preferences"
+      ]
+    },
+    {
+      "version": "v0.2.0",
+      "date": "December 17, 2025",
+      "title": "Accessibility & Theme Improvements",
+      "isLatest": false,
+      "items": [
+        "Added font size selector for elderly-friendly experience",
+        "Customized ChatKit theme to match TrialChat medical aesthetic",
+        "Updated starter prompts and greetings for ADRD clinical trials",
+        "Implemented FontSizeContext for global font size management"
+      ]
+    },
+    {
+      "version": "v0.1.0",
+      "date": "December 10, 2025",
+      "title": "Initial Release",
+      "isLatest": false,
+      "items": [
+        "Created TrialChat homepage with medical-themed design",
+        "Integrated OpenAI ChatKit for conversational AI",
+        "Implemented Clerk authentication",
+        "Set up session management with cookies"
+      ]
+    }
+  ],
+  "plannedFeatures": [
+    {
+      "title": "Multi-language Voice Input Support",
+      "description": "Add support for Spanish, Chinese, and other languages for voice input"
+    },
+    {
+      "title": "Voice Output (Text-to-Speech)",
+      "description": "Read AI responses aloud for users with visual impairments"
+    }
+  ],
+  "knownIssues": []
+}
