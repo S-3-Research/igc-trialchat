@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useFontSize } from "@/contexts/FontSizeContext";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
 import { ClinicianModal } from "@/components/ClinicianModal";
+import { buildTrackedUrl } from "@/lib/trackLink";
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -316,7 +317,7 @@ export default function Home() {
 
                     {/* Footer / Credits (Desktop Position) */}
                     <div className={`hidden md:block pt-12 opacity-60 text-xs font-mono animate-custom-fade-in-up transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`} style={{animationDelay: '0.55s'}}>
-                        <p>Designed by Cal State Fullerton & S-3 Research LLC</p>
+                        <p>Designed by Cal State Fullerton &amp; <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
                         <p className="mt-1">© 2026 All Rights Reserved</p>
                     </div>
                 </div>
@@ -466,7 +467,7 @@ export default function Home() {
             <div className={`md:hidden p-6 text-center text-xs backdrop-blur-md border-t transition-colors duration-300 ${
                 isLight ? 'text-slate-500 bg-white/80 border-slate-200' : 'text-slate-600 bg-slate-950/80 border-white/5'
             }`}>
-                <p>Designed by Cal State Fullerton & S-3 Research LLC</p>
+                <p>Designed by Cal State Fullerton &amp; <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
                 <Link href="/trial-chat/updates" className="mt-2 inline-block text-slate-400 underline">View Updates</Link>
             </div>
 
