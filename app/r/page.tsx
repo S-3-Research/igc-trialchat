@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 type UrlType = "http" | "tel" | "mailto";
@@ -118,9 +119,9 @@ function RedirectContent() {
     return (
       <div className="text-center space-y-3">
         <p className="text-slate-500 text-sm">Invalid or missing destination URL.</p>
-        <a href="/" className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-700">
+        <Link href="/" className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-700">
           Return to TrialChat
-        </a>
+        </Link>
       </div>
     );
   }
