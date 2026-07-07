@@ -19,8 +19,8 @@ export const DEFAULT_STARTER_PROMPTS: StartScreenPrompt[] = [
     icon: "search",
   },
   {
-    label: "What are clinical trials and what should I expect if I participate in one?",
-    prompt: "What are clinical trials and what should I expect if I participate in one?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "notebook",
   },
 ];
