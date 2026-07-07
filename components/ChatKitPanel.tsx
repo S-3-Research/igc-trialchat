@@ -939,7 +939,7 @@ export function ChatKitPanel({
         </div>
       </div>
 
-    <div className="chatkit-panel-container relative pb-8 flex flex-1 w-full h-full rounded-b-3xl md:rounded-3xl flex-col overflow-hidden border border-slate-200/60 shadow-2xl transition-colors dark:bg-[#181D26] dark:border-slate-700/60 z-0 bg-[#FDFDFE]" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.1)' }}>
+    <div className="chatkit-panel-container relative pb-8 flex flex-1 w-full h-full rounded-b-3xl md:rounded-3xl flex-col overflow-hidden border border-slate-200/60 shadow-2xl transition-colors dark:bg-[#181D26] dark:border-slate-700/60 bg-[#FDFDFE]" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.1)' }}>
       <ChatKit
         key={widgetInstanceKey}
         control={chatkit.control}

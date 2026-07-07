@@ -83,6 +83,21 @@ export default function App({ skipIntake = false, autoOpenMatch = false }: AppPr
     };
   }, []);
 
+  // Listen for clinician mode exit — re-show intake modal so user can re-select role
+  useEffect(() => {
+    const handleClinicianModeExited = () => {
+      console.log("[App] Clinician mode exited — resetting intake state");
+      setIntakeCompleted(false);
+      setShowIntakeModal(true);
+      setIsCheckingIntake(false);
+    };
+
+    window.addEventListener('clinician-mode-exited', handleClinicianModeExited);
+    return () => {
+      window.removeEventListener('clinician-mode-exited', handleClinicianModeExited);
+    };
+  }, []);
+
   // Update theme version when scheme changes to force ChatKit refresh
   useEffect(() => {
     setThemeVersion(prev => prev + 1);
@@ -224,6 +239,8 @@ export default function App({ skipIntake = false, autoOpenMatch = false }: AppPr
     
     setIntakeCompleted(true);
     setShowIntakeModal(false);
+    // Notify Header to re-check the role badge
+    window.dispatchEvent(new CustomEvent('intake-role-updated'));
   }, [isSignedIn]);
 
   const handleIntakeSkip = useCallback(() => {
