@@ -114,8 +114,8 @@ const LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "What are the stages of Alzheimer's disease?",
-    prompt: "What are the stages of Alzheimer's disease?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "search",
   },
 ];
