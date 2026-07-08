@@ -1,7 +1,86 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+
+const SESSION_KEY = "admin_authed";
+
+function AdminLogin({ onSuccess }: { onSuccess: () => void }) {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin-auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        onSuccess();
+      } else {
+        setError(data.error ?? "Incorrect password");
+        setPassword("");
+        inputRef.current?.focus();
+      }
+    } catch {
+      setError("Network error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="h-full w-full flex items-center justify-center">
+      <div className="w-full max-w-sm px-6">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 shadow-sm">
+          <div className="mb-6 text-center">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 mb-3">
+              <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Admin Access</h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Enter password to continue</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              ref={inputRef}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              autoComplete="current-password"
+              className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-blue-500/40 transition"
+            />
+            {error && (
+              <p className="text-xs text-red-500 dark:text-red-400">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={loading || !password}
+              className="w-full rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 transition-colors"
+            >
+              {loading ? "Verifying…" : "Sign in"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface DailyPoint {
   date: string;
@@ -65,6 +144,14 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
 }
 
 export default function AdminPage() {
+  const [authed, setAuthed] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    setAuthed(sessionStorage.getItem(SESSION_KEY) === "1");
+    setAuthChecked(true);
+  }, []);
+
   const [days, setDays] = useState<DayOption>(30);
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -85,8 +172,14 @@ export default function AdminPage() {
   }, [days]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (authed) fetchData();
+  }, [fetchData, authed]);
+
+  // Not yet checked (SSR → client hydration)
+  if (!authChecked) return null;
+
+  // Show login if not authenticated
+  if (!authed) return <AdminLogin onSuccess={() => setAuthed(true)} />;
 
   const maxDaily = data ? Math.max(...data.daily.map((d) => d.count), 1) : 1;
   const maxType = data ? Math.max(...Object.values(data.byType), 1) : 1;

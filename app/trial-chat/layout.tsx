@@ -10,7 +10,7 @@ export default function TrialChatLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isUnlocked, setIsUnlocked] = useState<boolean | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState<boolean | null>(true);
   const router = useRouter();
 
   useEffect(() => {
