@@ -25,8 +25,8 @@ export const DEFAULT_STARTER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
-// Starter prompts for trial matching intent - user role
-const TRIAL_MATCHING_USER_PROMPTS: StartScreenPrompt[] = [
+// Starter prompts for user — trial matching
+const USER_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
   {
     label: "I'd like to find clinical trials that match my health profile",
     prompt: "I'd like to find clinical trials that match my health profile",
@@ -44,8 +44,8 @@ const TRIAL_MATCHING_USER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
-// Starter prompts for trial matching intent - looking for someone else
-const TRIAL_MATCHING_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
+// Starter prompts for caregiver — trial matching
+const CAREGIVER_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
   {
     label: "Help me find clinical trials suitable for someone I know",
     prompt: "Help me find clinical trials suitable for someone I know",
@@ -63,8 +63,8 @@ const TRIAL_MATCHING_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
-// Starter prompts for learning intent - user role
-const LEARN_USER_PROMPTS: StartScreenPrompt[] = [
+// Starter prompts for user — learn about trials
+const USER_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
   {
     label: "Can you explain what Alzheimer's disease is and why clinical trials matter?",
     prompt: "Can you explain what Alzheimer's disease is and why clinical trials matter?",
@@ -82,8 +82,8 @@ const LEARN_USER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
-// Starter prompts for learning intent - looking for someone else
-const LEARN_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
+// Starter prompts for caregiver — learn about trials
+const CAREGIVER_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
   {
     label: "Can you explain Alzheimer's disease and why clinical trials are important?",
     prompt: "Can you explain Alzheimer's disease and why clinical trials are important?",
@@ -101,8 +101,27 @@ const LEARN_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
   },
 ];
 
-// Starter prompts for learning about Alzheimer's disease
-const LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+// Starter prompts for user — learn about Alzheimer's disease
+const USER_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+  {
+    label: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
+    prompt: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
+    icon: "circle-question",
+  },
+  {
+    label: "What causes ADRD, and can it be prevented or slowed down?",
+    prompt: "What causes ADRD, and can it be prevented or slowed down?",
+    icon: "notebook",
+  },
+  {
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    icon: "search",
+  },
+];
+
+// Starter prompts for caregiver — learn about Alzheimer's disease
+const CAREGIVER_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
   {
     label: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
     prompt: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
@@ -210,21 +229,21 @@ export const getStarterPromptsForUser = (intakeData: IntakeData | null): StartSc
 
   // intent is the primary signal; null role falls back to user perspective
   if (intent === 'trial_matching') {
-    return role === 'caregiver' ? TRIAL_MATCHING_CAREGIVER_PROMPTS : TRIAL_MATCHING_USER_PROMPTS;
+    return role === 'caregiver' ? CAREGIVER_TRIAL_MATCHING_PROMPTS : USER_TRIAL_MATCHING_PROMPTS;
   }
   if (intent === 'learn_about_trials') {
-    return role === 'caregiver' ? LEARN_CAREGIVER_PROMPTS : LEARN_USER_PROMPTS;
+    return role === 'caregiver' ? CAREGIVER_LEARN_TRIALS_PROMPTS : USER_LEARN_TRIALS_PROMPTS;
   }
   if (intent === 'learn_about_alzheimer') {
-    return LEARN_ALZHEIMER_PROMPTS;
+    return role === 'caregiver' ? CAREGIVER_LEARN_ALZHEIMER_PROMPTS : USER_LEARN_ALZHEIMER_PROMPTS;
   }
   if (role === 'caregiver') {
     // Role signal without intent leans towards caregiver prompts
-    return TRIAL_MATCHING_CAREGIVER_PROMPTS;
+    return CAREGIVER_TRIAL_MATCHING_PROMPTS;
   }
   if (role === 'user') {
     // Role signal without intent leans towards user prompts
-    return TRIAL_MATCHING_USER_PROMPTS;
+    return USER_TRIAL_MATCHING_PROMPTS;
   }
   // intent is null — no directional signal, use default
   return DEFAULT_STARTER_PROMPTS;
