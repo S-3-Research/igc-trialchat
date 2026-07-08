@@ -147,7 +147,7 @@ export default function UpdatesPage() {
 
         {/* Footer */}
         <div className="mt-12 border-t border-slate-200 pt-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
-          Developed by Cal State Fullerton and S-3 Research LLC
+          Developed by S-3 Research LLC
         </div>
       </div>
     </div>

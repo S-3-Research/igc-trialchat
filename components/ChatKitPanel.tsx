@@ -927,13 +927,13 @@ export function ChatKitPanel({
           <button
             onClick={() => intakeData?.role === 'clinician' ? setShowClinicianModal(true) : setShowMatchModal(true)}
             className="flex items-center justify-center gap-1.5 h-9 px-4 rounded-full bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm focus:outline-none"
-            aria-label={intakeData?.role === 'clinician' ? 'Screen a client for clinical trials' : 'Find matching clinical trials'}
+            aria-label={intakeData?.role === 'clinician' ? 'Screen a patient for clinical trials' : 'Find matching clinical trials'}
           >
             <svg className="w-4 h-4 text-blue-600 fill-current" viewBox="0 0 24 24">
               <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
             <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
-              {intakeData?.role === 'clinician' ? 'Screen a client' : 'Find matching trials'}
+              {intakeData?.role === 'clinician' ? 'Screen a patient' : 'Find matching trials'}
             </span>
           </button>
         </div>
@@ -995,7 +995,7 @@ export function ChatKitPanel({
             <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
           </svg>
           <span className="font-bold tracking-wide bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
-            {intakeData?.role === 'clinician' ? 'Screen a client' : 'Find matching trials'}
+            {intakeData?.role === 'clinician' ? 'Screen a patient' : 'Find matching trials'}
           </span>
         </button>
       </div>
@@ -1017,7 +1017,7 @@ export function ChatKitPanel({
         />
       )}
 
-      {/* Clinician Client Screen Modal */}
+      {/* Clinician Patient Screen Modal */}
       {showClinicianModal && (
         <ClinicianModal
           initialStep="prescreen"

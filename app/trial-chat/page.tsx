@@ -69,16 +69,9 @@ export default function Home() {
         }
         
         .glass-card {
-            background: rgba(15, 23, 42, 0.4); 
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(148, 163, 184, 0.1); 
-            transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-            background: rgba(30, 41, 59, 0.6);
-            border-color: rgba(148, 163, 184, 0.3);
-            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.22); 
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(148, 163, 184, 0.08); 
         }
 
         .text-gradient-logo {
@@ -99,12 +92,8 @@ export default function Home() {
             box-shadow: 0 8px 32px 0 rgba(100, 116, 139, 0.15);
         }
         .landing-light .glass-card {
-            background: rgba(248, 250, 252, 0.85);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-        }
-        .landing-light .glass-card:hover {
-            background: rgba(241, 245, 249, 0.95);
-            border-color: rgba(100, 116, 139, 0.4);
+            background: rgba(248, 250, 252, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.18);
         }
         .landing-light .text-gradient-logo {
             background-image: linear-gradient(135deg, #334155 0%, #64748b 100%);
@@ -310,14 +299,14 @@ export default function Home() {
                     
                     {/* Tagline */}
                     <p className={`text-lg md:text-2xl font-light max-w-lg animate-custom-fade-in-up transition-colors duration-300 ${isLight ? 'text-slate-600' : 'text-slate-400'}`} style={{animationDelay: '0.4s'}}>
-                        Connecting seniors and caregivers to{' '}
+                        Connecting seniors, caregivers, and clinicians to{' '}
                         <span className={`font-medium ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Alzheimer&apos;s research</span>
                         {' '}with clarity and compassion.
                     </p>
 
                     {/* Footer / Credits (Desktop Position) */}
                     <div className={`hidden md:block pt-12 opacity-60 text-xs font-mono animate-custom-fade-in-up transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`} style={{animationDelay: '0.55s'}}>
-                        <p>Designed by Cal State Fullerton &amp; <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
+                        <p>Designed by <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
                         <p className="mt-1">© 2026 All Rights Reserved</p>
                     </div>
                 </div>
@@ -342,50 +331,8 @@ export default function Home() {
                             </p>
                         </div>
 
-                        {/* Feature Stack */}
-                        <div className="space-y-3 relative z-10">
-                            {/* Feature 1 */}
-                            <div className="glass-card p-4 rounded-xl flex items-center gap-4 cursor-default">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-inner transition-colors duration-300 ${isLight ? 'bg-blue-50 text-blue-500' : 'bg-slate-800/50 text-blue-300'}`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isLight ? 'text-slate-700' : 'text-slate-200'}`}>Personalized Education</h3>
-                                    <p className={`text-xs transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Learn about Alzheimer&apos;s disease on your terms.</p>
-                                </div>
-                            </div>
-
-                            {/* Feature 2 */}
-                            <div className="glass-card p-4 rounded-xl flex items-center gap-4 cursor-default">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-inner transition-colors duration-300 ${isLight ? 'bg-purple-50 text-purple-500' : 'bg-slate-800/50 text-purple-300'}`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isLight ? 'text-slate-700' : 'text-slate-200'}`}>Smart Trial Matching</h3>
-                                    <p className={`text-xs transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Find studies fitting your needs & location.</p>
-                                </div>
-                            </div>
-
-                            {/* Feature 3 */}
-                            <div className="glass-card p-4 rounded-xl flex items-center gap-4 cursor-default">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-inner transition-colors duration-300 ${isLight ? 'bg-emerald-50 text-emerald-500' : 'bg-slate-800/50 text-emerald-300'}`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isLight ? 'text-slate-700' : 'text-slate-200'}`}>Simplified Enrollment</h3>
-                                    <p className={`text-xs transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Step-by-step guidance to get started.</p>
-                                </div>
-                            </div>
-                        </div>
-
                         {/* CTA Button Area */}
-                        <div className="mt-8 pt-6 border-t border-white/10 relative z-10 flex flex-col gap-3">
+                        <div className="relative z-10 flex flex-col gap-3">
                             {/* Button 1: Learn about Alzheimer’s disease */}
                             <Link href="/trial-chat/chat" className="w-full block group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-200 to-slate-400 p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
                                 <div className="relative h-full w-full rounded-xl bg-slate-900 px-6 py-4 transition-all group-hover/btn:bg-slate-800">
@@ -435,6 +382,54 @@ export default function Home() {
                                 </svg>
                             </button>
                         </div>
+
+                        {/* Space between CTA and Feature Stack */}
+                        <div className="flex items-center justify-center mt-4 mb-4">
+                            {/* <div className={`h-px w-16 ${isLight ? 'bg-slate-300/70' : 'bg-white/20'}`}></div> */}
+                        </div>
+
+                        {/* Feature Stack */}
+                        <div className="space-y-3 relative z-10">
+                            <p className={`text-md font-semibold leading-relaxed mb-3 transition-colors duration-300 ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>How we help.</p>
+                            {/* Feature 1 */}
+                            <div className="glass-card p-3.5 rounded-xl flex items-center gap-3 cursor-default">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-inner opacity-80 transition-colors duration-300 ${isLight ? 'bg-blue-50/70 text-blue-500' : 'bg-slate-800/35 text-blue-300'}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className={`text-[13px] font-medium transition-colors duration-300 ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>Personalized Education</h3>
+                                    <p className={`text-[11px] transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Learn about Alzheimer&apos;s disease on your terms.</p>
+                                </div>
+                            </div>
+
+                            {/* Feature 2 */}
+                            <div className="glass-card p-3.5 rounded-xl flex items-center gap-3 cursor-default">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-inner opacity-80 transition-colors duration-300 ${isLight ? 'bg-purple-50/70 text-purple-500' : 'bg-slate-800/35 text-purple-300'}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className={`text-[13px] font-medium transition-colors duration-300 ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>Smart Trial Matching</h3>
+                                    <p className={`text-[11px] transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Find studies fitting your needs & location.</p>
+                                </div>
+                            </div>
+
+                            {/* Feature 3 */}
+                            <div className="glass-card p-3.5 rounded-xl flex items-center gap-3 cursor-default">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-inner opacity-80 transition-colors duration-300 ${isLight ? 'bg-emerald-50/70 text-emerald-500' : 'bg-slate-800/35 text-emerald-300'}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className={`text-[13px] font-medium transition-colors duration-300 ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>Simplified Engagement</h3>
+                                    <p className={`text-[11px] transition-colors duration-300 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Connect directly to trial sites.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>{/* end card hover div */}
 
@@ -467,7 +462,7 @@ export default function Home() {
             <div className={`md:hidden p-6 text-center text-xs backdrop-blur-md border-t transition-colors duration-300 ${
                 isLight ? 'text-slate-500 bg-white/80 border-slate-200' : 'text-slate-600 bg-slate-950/80 border-white/5'
             }`}>
-                <p>Designed by Cal State Fullerton &amp; <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
+                <p>Designed by <a href={buildTrackedUrl("https://s-3.io", { cta: "footer-s3-link" })} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80 transition-opacity">S-3 Research LLC</a></p>
                 <Link href="/trial-chat/updates" className="mt-2 inline-block text-slate-400 underline">View Updates</Link>
             </div>
 

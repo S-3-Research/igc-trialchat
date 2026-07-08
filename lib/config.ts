@@ -38,8 +38,8 @@ const TRIAL_MATCHING_USER_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "Are there trials near my location?",
-    prompt: "Are there trials near my location?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "circle-question",
   },
 ];
@@ -57,8 +57,8 @@ const TRIAL_MATCHING_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "Are there trials available near us?",
-    prompt: "Are there trials available near us?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "circle-question",
   },
 ];
@@ -76,8 +76,8 @@ const LEARN_USER_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "What are the potential risks and benefits of joining a trial?",
-    prompt: "What are the potential risks and benefits of joining a trial?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "search",
   },
 ];
@@ -95,8 +95,8 @@ const LEARN_CAREGIVER_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "How can I help someone I know prepare for or consider joining a trial?",
-    prompt: "How can I help someone I know prepare for or consider joining a trial?",
+    label: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
     icon: "search",
   },
 ];
@@ -133,17 +133,17 @@ const CLINICIAN_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
     icon: "circle-question",
   },
   {
-    label: "How do I discuss clinical trials with clients?",
-    prompt: "How do I discuss clinical trials with clients?",
+    label: "How do I discuss clinical trials with patients?",
+    prompt: "How do I discuss clinical trials with patients?",
     icon: "search",
   },
 ];
 
-// Starter prompts for clinicians — trial matching / client pre-screen
+// Starter prompts for clinicians — trial matching / patient pre-screen
 const CLINICIAN_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
   {
-    label: "Help me pre-screen a client for ADRD trials",
-    prompt: "Help me pre-screen a client for ADRD trials",
+    label: "Help me pre-screen a patient for ADRD trials",
+    prompt: "Help me pre-screen a patient for ADRD trials",
     icon: "search",
   },
   {
@@ -152,8 +152,8 @@ const CLINICIAN_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
     icon: "notebook",
   },
   {
-    label: "Identify potential trials based on a basic client profile",
-    prompt: "Identify potential trials based on a basic client profile",
+    label: "Identify potential trials based on a basic patient profile",
+    prompt: "Identify potential trials based on a basic patient profile",
     icon: "circle-question",
   },
 ];
@@ -186,10 +186,10 @@ const GREETINGS = {
   learn_about_alzheimer_user: "Welcome to TrialChat! I'm here to help you learn about Alzheimer's disease. What would you like to know?",
   learn_about_alzheimer_caregiver: "Welcome to TrialChat! I'm here to help you learn about Alzheimer's disease for someone you care for. What can I explain?",
   default: "Welcome to TrialChat! I'm here to help you navigate Alzheimer's disease clinical trials. How can I assist you today?",
-  clinician_trial_matching: "Welcome to TrialChat. I can help you pre-screen a client for potential ADRD clinical trial matches. Please provide non-identifying clinical details.",
+  clinician_trial_matching: "Welcome to TrialChat. I can help you pre-screen a patient for potential ADRD clinical trial matches. Please provide non-identifying clinical details.",
   clinician_learn_about_trials: "I can help explain ADRD clinical trials, eligibility criteria, risks and benefits, and referral considerations in clinician-friendly language.",
   clinician_learn_about_alzheimer: "I can help summarize Alzheimer's disease and related dementias for clinical context, including progression, symptoms, and research updates.",
-  clinician_default: "Welcome to TrialChat. I can help clinicians understand ADRD clinical trials, eligibility criteria, and support client pre-screening. How can I assist?",
+  clinician_default: "Welcome to TrialChat. I can help clinicians understand ADRD clinical trials, eligibility criteria, and support patient pre-screening. How can I assist?",
 };
 
 // Helper function to get starter prompts based on user preferences

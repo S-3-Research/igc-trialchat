@@ -72,7 +72,7 @@ export function ClinicianModal({ onClose, initialStep = "intent", onConfirm }: C
     const genderLabel =
       GENDER_OPTIONS.find((g) => g.value === gender)?.label ?? gender;
 
-    let message = `I am a clinician helping pre-screen a client for potential ADRD clinical trial matches.\nThe client is ${age} years old, located in ZIP ${zipcode.trim()}, sex/gender: ${genderLabel}.`;
+    let message = `I am a clinician helping pre-screen a patient for potential ADRD clinical trial matches.\nThe patient is ${age} years old, located in ZIP ${zipcode.trim()}, sex/gender: ${genderLabel}.`;
     if (diagnosis.trim()) {
       message += `\nClinical context: ${diagnosis.trim()}.`;
     }
@@ -190,7 +190,7 @@ export function ClinicianModal({ onClose, initialStep = "intent", onConfirm }: C
                     </div>
                   </button>
 
-                  {/* Option 2: Pre-screen a client */}
+                  {/* Option 2: Pre-screen a patient */}
                   <button
                     onClick={() => setStep("prescreen")}
                     className="group w-full p-4 text-left rounded-xl border border-slate-200 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-800/40 hover:border-blue-300 dark:hover:border-blue-600/60 hover:bg-blue-50/60 dark:hover:bg-blue-900/20 transition-all"
@@ -198,10 +198,10 @@ export function ClinicianModal({ onClose, initialStep = "intent", onConfirm }: C
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-semibold text-sm text-slate-800 dark:text-slate-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                          Pre-screen a client for trial matching
+                          Pre-screen a patient for trial matching
                         </div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                          Provide client details to find relevant trials
+                          Provide patient details to find relevant trials
                         </div>
                       </div>
                       <svg
@@ -248,7 +248,7 @@ export function ClinicianModal({ onClose, initialStep = "intent", onConfirm }: C
                       </svg>
                     </button>
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white">
-                      Client Pre-screen
+                      Patient Pre-screen
                     </h2>
                   </div>
                   <div className="flex items-start gap-1.5 mt-2">
