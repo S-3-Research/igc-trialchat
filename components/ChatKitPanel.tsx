@@ -11,11 +11,13 @@ import {
   getStarterPromptsForUser,
   getGreetingForUser,
 } from "@/lib/config";
+import { resolvePrompts } from "@/lib/types/prompts";
 import { IntakeData } from "@/lib/types/intake";
 import { ErrorOverlay } from "./ErrorOverlay";
 import { VoiceInputButton } from "./VoiceInputButton";
 import { VoiceInputButtonWhisper } from "./VoiceInputButtonWhisper";
 import type { ColorScheme } from "@/hooks/useColorScheme";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { useFontSize } from "@/contexts/FontSizeContext";
 import { useVoiceInputMode } from "@/contexts/VoiceInputModeContext";
 import { correctMedicalTerms } from "@/lib/medicalTermsCorrection";
@@ -370,9 +372,11 @@ export function ChatKitPanel({
 
   const baseSize = fontSize === "small" ? 14 : fontSize === "large" ? 18 : 16;
   
+  const isMobile = useIsMobile();
+
   // Get dynamic greeting and prompts based on intake data
   const greeting = getGreetingForUser(intakeData);
-  const prompts = getStarterPromptsForUser(intakeData);
+  const prompts = resolvePrompts(getStarterPromptsForUser(intakeData), isMobile);
   
   console.log('[ChatKitPanel] Configuration:', {
     intakeData,

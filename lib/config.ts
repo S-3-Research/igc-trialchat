@@ -1,5 +1,6 @@
-import { ColorScheme, StartScreenPrompt, ThemeOption } from "@openai/chatkit";
+import { ColorScheme, ThemeOption } from "@openai/chatkit";
 import { IntakeData } from "./types/intake";
+import { ExtendedStartScreenPrompt } from "./types/prompts";
 
 export const WORKFLOW_ID =
   process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID?.trim() ?? "";
@@ -7,191 +8,221 @@ export const WORKFLOW_ID =
 export const CREATE_SESSION_ENDPOINT = "/api/create-session";
 
 // Default starter prompts (fallback for users without intake data)
-export const DEFAULT_STARTER_PROMPTS: StartScreenPrompt[] = [
+export const DEFAULT_STARTER_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Can you explain what Alzheimer's disease is and why clinical trials are important?",
     prompt: "Can you explain what Alzheimer's disease is and why clinical trials are important?",
+    short: "What is Alzheimer's & why do trials matter?",
     icon: "circle-question",
   },
   {
     label: "Find clinical trials that might be right for me?",
     prompt: "Find clinical trials that might be right for me?",
+    short: "Find trials that fit me",
     icon: "search",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "notebook",
   },
 ];
 
 // Starter prompts for user — trial matching
-const USER_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
+const USER_TRIAL_MATCHING_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "I'd like to find clinical trials that match my health profile",
     prompt: "I'd like to find clinical trials that match my health profile",
+    short: "Find trials matching my profile",
     icon: "search",
   },
   {
     label: "What are the eligibility criteria for Alzheimer's disease trials?",
     prompt: "What are the eligibility criteria for Alzheimer's disease trials?",
+    short: "What are trial eligibility criteria?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "circle-question",
   },
 ];
 
 // Starter prompts for caregiver — trial matching
-const CAREGIVER_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
+const CAREGIVER_TRIAL_MATCHING_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Help me find clinical trials suitable for someone I know",
     prompt: "Help me find clinical trials suitable for someone I know",
+    short: "Find trials for someone I know",
     icon: "search",
   },
   {
     label: "What eligibility criteria should I know about for Alzheimer's disease trials?",
     prompt: "What eligibility criteria should I know about for Alzheimer's disease trials?",
+    short: "What are trial eligibility criteria?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "circle-question",
   },
 ];
 
 // Starter prompts for user — learn about trials
-const USER_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
+const USER_LEARN_TRIALS_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Can you explain what Alzheimer's disease is and why clinical trials matter?",
     prompt: "Can you explain what Alzheimer's disease is and why clinical trials matter?",
+    short: "Why do clinical trials matter?",
     icon: "circle-question",
   },
   {
     label: "What should I expect if I participate in a clinical trial?",
     prompt: "What should I expect if I participate in a clinical trial?",
+    short: "What to expect in a trial?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "search",
   },
 ];
 
 // Starter prompts for caregiver — learn about trials
-const CAREGIVER_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
+const CAREGIVER_LEARN_TRIALS_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Can you explain Alzheimer's disease and why clinical trials are important?",
     prompt: "Can you explain Alzheimer's disease and why clinical trials are important?",
+    short: "Why are clinical trials important?",
     icon: "circle-question",
   },
   {
     label: "What happens when someone participates in a clinical trial?",
     prompt: "What happens when someone participates in a clinical trial?",
+    short: "What happens in a clinical trial?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "search",
   },
 ];
 
 // Starter prompts for user — learn about Alzheimer's disease
-const USER_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+const USER_LEARN_ALZHEIMER_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
     prompt: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
+    short: "Latest ADRD research breakthroughs?",
     icon: "circle-question",
   },
   {
     label: "What causes ADRD, and can it be prevented or slowed down?",
     prompt: "What causes ADRD, and can it be prevented or slowed down?",
+    short: "What causes ADRD?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "search",
   },
 ];
 
 // Starter prompts for caregiver — learn about Alzheimer's disease
-const CAREGIVER_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+const CAREGIVER_LEARN_ALZHEIMER_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
     prompt: "What are the latest research breakthroughs in Alzheimer's disease and related dementias (ADRD)?",
+    short: "Latest ADRD research breakthroughs?",
     icon: "circle-question",
   },
   {
     label: "What causes ADRD, and can it be prevented or slowed down?",
     prompt: "What causes ADRD, and can it be prevented or slowed down?",
+    short: "What causes ADRD?",
     icon: "notebook",
   },
   {
     label: "What are the symptoms of Alzheimer's disease, such as agitation?",
     prompt: "What are the symptoms of Alzheimer's disease, such as agitation?",
+    short: "What are Alzheimer's symptoms?",
     icon: "search",
   },
 ];
 
 // Starter prompts for clinicians — learn about ADRD trials
-const CLINICIAN_LEARN_TRIALS_PROMPTS: StartScreenPrompt[] = [
+const CLINICIAN_LEARN_TRIALS_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Explain common ADRD trial eligibility criteria",
     prompt: "Explain common ADRD trial eligibility criteria",
+    short: "ADRD trial eligibility criteria",
     icon: "notebook",
   },
   {
     label: "What should clinicians know about risks and benefits of trials?",
     prompt: "What should clinicians know about risks and benefits of trials?",
+    short: "Trial risks & benefits overview",
     icon: "circle-question",
   },
   {
     label: "How do I discuss clinical trials with patients?",
     prompt: "How do I discuss clinical trials with patients?",
+    short: "Discussing trials with patients",
     icon: "search",
   },
 ];
 
 // Starter prompts for clinicians — trial matching / patient pre-screen
-const CLINICIAN_TRIAL_MATCHING_PROMPTS: StartScreenPrompt[] = [
+const CLINICIAN_TRIAL_MATCHING_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Help me pre-screen a patient for ADRD trials",
     prompt: "Help me pre-screen a patient for ADRD trials",
+    short: "Pre-screen a patient for ADRD trials",
     icon: "search",
   },
   {
     label: "What key eligibility factors matter most for ADRD trials?",
     prompt: "What key eligibility factors matter most for ADRD trials?",
+    short: "Key ADRD eligibility factors",
     icon: "notebook",
   },
   {
     label: "Identify potential trials based on a basic patient profile",
     prompt: "Identify potential trials based on a basic patient profile",
+    short: "Trials for a patient profile",
     icon: "circle-question",
   },
 ];
 
 // Starter prompts for clinicians — learn about Alzheimer's disease
-const CLINICIAN_LEARN_ALZHEIMER_PROMPTS: StartScreenPrompt[] = [
+const CLINICIAN_LEARN_ALZHEIMER_PROMPTS: ExtendedStartScreenPrompt[] = [
   {
     label: "Summarize ADRD for clinical discussion",
     prompt: "Summarize ADRD for clinical discussion",
+    short: "Summarize ADRD clinically",
     icon: "circle-question",
   },
   {
     label: "What are the stages of Alzheimer's disease?",
     prompt: "What are the stages of Alzheimer's disease?",
+    short: "Stages of Alzheimer's disease",
     icon: "notebook",
   },
   {
     label: "What recent research updates are relevant for clinicians?",
     prompt: "What recent research updates are relevant for clinicians?",
+    short: "Recent ADRD research updates",
     icon: "search",
   },
 ];
@@ -212,7 +243,7 @@ const GREETINGS = {
 };
 
 // Helper function to get starter prompts based on user preferences
-export const getStarterPromptsForUser = (intakeData: IntakeData | null): StartScreenPrompt[] => {
+export const getStarterPromptsForUser = (intakeData: IntakeData | null): ExtendedStartScreenPrompt[] => {
   if (!intakeData) {
     return DEFAULT_STARTER_PROMPTS;
   }
