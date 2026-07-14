@@ -21,6 +21,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { useFontSize } from "@/contexts/FontSizeContext";
 import { useVoiceInputMode } from "@/contexts/VoiceInputModeContext";
 import { correctMedicalTerms } from "@/lib/medicalTermsCorrection";
+import { createLogger } from "@/lib/logger";
 import { MatchProfileModal } from "./MatchProfileModal";
 import type { MatchProfile } from "./MatchProfileModal";
 import { ClinicianModal } from "./ClinicianModal";
@@ -48,7 +49,10 @@ type ErrorState = {
 };
 
 const isBrowser = typeof window !== "undefined";
-const isDev = process.env.NODE_ENV !== "production";
+const isDev =
+  process.env.NODE_ENV !== "production" ||
+  process.env.NEXT_PUBLIC_DEBUG === "true";
+const log = createLogger("ChatKitPanel");
 
 const createInitialErrors = (): ErrorState => ({
   script: null,
@@ -123,7 +127,7 @@ export function ChatKitPanel({
     if (stored) {
       try {
         const parsedData = JSON.parse(stored);
-        console.log('[ChatKitPanel] Loaded intake data on mount:', parsedData);
+        log('Loaded intake data on mount:', parsedData);
         setIntakeData(parsedData);
       } catch (error) {
         console.error('[ChatKitPanel] Failed to parse intake data on mount:', error);
@@ -250,11 +254,11 @@ export function ChatKitPanel({
         let parsedIntakeData = null;
         if (isBrowser) {
           const stored = localStorage.getItem('intake_data');
-          console.log('[ChatKitPanel] Raw localStorage:', stored);
+          log('Raw localStorage:', stored);
           if (stored) {
             try {
               parsedIntakeData = JSON.parse(stored);
-              console.log('[ChatKitPanel] Parsed intake data:', parsedIntakeData);
+              log('Parsed intake data:', parsedIntakeData);
               // Store in component state for use in startScreen configuration
               if (isMountedRef.current) {
                 setIntakeData(parsedIntakeData);
@@ -263,7 +267,7 @@ export function ChatKitPanel({
               console.error('[ChatKitPanel] Failed to parse intake data:', error);
             }
           } else {
-            console.log('[ChatKitPanel] No intake data in localStorage');
+            log('No intake data in localStorage');
           }
         }
 
@@ -275,9 +279,9 @@ export function ChatKitPanel({
           if (!guestUserId) {
             guestUserId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
             localStorage.setItem(GUEST_ID_KEY, guestUserId);
-            console.log('[ChatKitPanel] Generated new guest ID:', guestUserId);
+            log('Generated new guest ID:', guestUserId);
           } else {
-            console.log('[ChatKitPanel] Using existing guest ID:', guestUserId);
+            log('Using existing guest ID:', guestUserId);
           }
         }
 
@@ -287,7 +291,7 @@ export function ChatKitPanel({
           guest_user_id: guestUserId, // Pass stable guest ID to preserve history
         };
         
-        console.log('[ChatKitPanel] Sending to /api/create-session:', JSON.stringify(requestBody, null, 2));
+        log('Sending to /api/create-session:', JSON.stringify(requestBody, null, 2));
 
         const response = await fetch(CREATE_SESSION_ENDPOINT, {
           method: "POST",
@@ -298,7 +302,7 @@ export function ChatKitPanel({
         });
 
         const raw = await response.text();
-        console.log("[ChatKitPanel] createSession raw body:", raw);
+        log("createSession raw body:", raw);
 
         if (isDev) {
           console.info("[ChatKitPanel] createSession response", {
@@ -353,13 +357,12 @@ export function ChatKitPanel({
         }
         throw error instanceof Error ? error : new Error(detail);
       } finally {
-        console.log("[ChatKitPanel] getClientSecret completed");
-        console.log({ isMounted: isMountedRef.current, currentSecret });
+        log("getClientSecret completed", { isMounted: isMountedRef.current, currentSecret });
         if (isMountedRef.current && !currentSecret) {
           // Do not force isInitializingSession to false here.
           // We wait for chatkit.control/session to be available in the useEffect hook.
           // This ensures the Voice button doesn't appear before the Chat UI is ready.
-          console.log("[ChatKitPanel] Waiting for chatkit.control before setting isInitializingSession to false");
+          log("Waiting for chatkit.control before setting isInitializingSession to false");
         } else {
              // For renewals (currentSecret present), we might not want to touch generic loading state
              // but if we were loading, this logic would apply.
@@ -378,7 +381,7 @@ export function ChatKitPanel({
   const greeting = getGreetingForUser(intakeData);
   const prompts = resolvePrompts(getStarterPromptsForUser(intakeData), isMobile);
   
-  console.log('[ChatKitPanel] Configuration:', {
+  log('Configuration:', {
     intakeData,
     greeting,
     promptsCount: prompts.length,
@@ -410,7 +413,7 @@ export function ChatKitPanel({
 
         // Handle conversation.followup — auto-send the payload text
         if (action.type === "conversation.followup") {
-          console.log("[ChatKitPanel] conversation.followup action:", action);
+          log("conversation.followup action:", action);
           const text = action.payload?.text;
           if (text && chatkit.control) {
             // Defer to next tick to avoid "Maximum update depth exceeded" (React #185)
@@ -809,7 +812,7 @@ export function ChatKitPanel({
 
   useEffect(() => {
     if (chatkit.control && isInitializingSession) {
-      console.log("[ChatKitPanel] ChatKit ready → stop loading");
+      log("ChatKit ready → stop loading");
       setIsInitializingSession(false);
     }
   }, [chatkit.control, isInitializingSession]);
@@ -833,7 +836,7 @@ export function ChatKitPanel({
   useEffect(() => {
     if (isInitializingSession || isContentReady) return;
     const t = setTimeout(() => {
-      console.log('[ChatKitPanel] fallback timeout → force content ready');
+      log('fallback timeout → force content ready');
       markContentReady();
     }, 2500);
     return () => clearTimeout(t);
