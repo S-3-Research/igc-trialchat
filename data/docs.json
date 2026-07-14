@@ -1,0 +1,30 @@
+[
+  {
+    "id": "information-for-families-and-caregivers-calma",
+    "title": "Information For Families and Caregivers-CALMA",
+    "description": "Agitation can include restlessness, pacing, repeated",
+    "file": "/docs/Information-For-Families-and-Caregivers-CALMA.pdf",
+    "cover": "/docs/covers/information-for-families-and-caregivers-calma.png"
+  },
+  {
+    "id": "physicians-brochure-calma",
+    "title": "Physicians Brochure CALMA",
+    "description": "A Phase 2, Multi-Center, Double-Blind, Randomized, Placebo-Controlled,",
+    "file": "/docs/Physicians%20Brochure%20-%20CALMA.pdf",
+    "cover": "/docs/covers/physicians-brochure-calma.png"
+  },
+  {
+    "id": "pre-screening-form-agitation-en",
+    "title": "Pre-screening Form Agitation",
+    "description": "People with Alzheimer’s may have behaviors that are hard to handle. If you take care of or",
+    "file": "/docs/Pre-screening_Form%20_Agitation_EN.pdf",
+    "cover": "/docs/covers/pre-screening-form-agitation-en.png"
+  },
+  {
+    "id": "sp-information-for-families-and-caregivers-calma",
+    "title": "Información para Familias y Cuidadores",
+    "description": "La agitación en la enfermedad de Alzheimer es un conjunto de",
+    "file": "/docs/SP%20Information-For-Families-and-Caregivers-CALMA.pdf",
+    "cover": "/docs/covers/sp-information-for-families-and-caregivers-calma.png"
+  }
+]
