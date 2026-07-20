@@ -22,6 +22,7 @@ import { useFontSize } from "@/contexts/FontSizeContext";
 import { useVoiceInputMode } from "@/contexts/VoiceInputModeContext";
 import { correctMedicalTerms } from "@/lib/medicalTermsCorrection";
 import { createLogger } from "@/lib/logger";
+import { getOrCreateGuestUserId, isTestMode } from "@/lib/guestId";
 import { MatchProfileModal } from "./MatchProfileModal";
 import type { MatchProfile } from "./MatchProfileModal";
 import { ClinicianModal } from "./ClinicianModal";
@@ -271,24 +272,20 @@ export function ChatKitPanel({
           }
         }
 
-        // For guest users, maintain stable user ID to preserve chat history
+        // For guest users, maintain stable user ID to preserve chat history.
+        // In test mode (?test=true), the id gets a `test_` prefix instead of
+        // `guest_` so test conversations can be distinguished/excluded later.
         let guestUserId = null;
         if (isBrowser && !isSignedIn) {
-          const GUEST_ID_KEY = 'chatkit_guest_user_id';
-          guestUserId = localStorage.getItem(GUEST_ID_KEY);
-          if (!guestUserId) {
-            guestUserId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            localStorage.setItem(GUEST_ID_KEY, guestUserId);
-            log('Generated new guest ID:', guestUserId);
-          } else {
-            log('Using existing guest ID:', guestUserId);
-          }
+          guestUserId = getOrCreateGuestUserId();
+          log('Using guest ID:', guestUserId, isTestMode() ? '(test mode)' : '');
         }
 
         const requestBody = {
           workflow: { id: WORKFLOW_ID },
           intake_data: parsedIntakeData, // Pass to backend for processing
           guest_user_id: guestUserId, // Pass stable guest ID to preserve history
+          is_test: isBrowser ? isTestMode() : false,
         };
         
         log('Sending to /api/create-session:', JSON.stringify(requestBody, null, 2));

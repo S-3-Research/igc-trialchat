@@ -89,6 +89,7 @@ interface DailyPoint {
 
 interface StatsData {
   total: number;
+  excludedTest: boolean;
   daily: DailyPoint[];
   byType: Record<string, number>;
   byRole: Record<string, number>;
@@ -153,6 +154,7 @@ export default function AdminPage() {
   }, []);
 
   const [days, setDays] = useState<DayOption>(30);
+  const [includeTest, setIncludeTest] = useState(false);
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -161,7 +163,7 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/link-events?days=${days}`);
+      const res = await fetch(`/api/link-events?days=${days}&exclude_test=${includeTest ? "false" : "true"}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setData(await res.json() as StatsData);
     } catch (e) {
@@ -169,7 +171,7 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }, [days]);
+  }, [days, includeTest]);
 
   useEffect(() => {
     if (authed) fetchData();
@@ -212,6 +214,17 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Include test data toggle */}
+            <label className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 select-none cursor-pointer px-2">
+              <input
+                type="checkbox"
+                checked={includeTest}
+                onChange={(e) => setIncludeTest(e.target.checked)}
+                className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500/40"
+              />
+              Include test data
+            </label>
+
             {/* Refresh */}
             <button
               onClick={fetchData}

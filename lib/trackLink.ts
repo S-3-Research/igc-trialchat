@@ -25,6 +25,8 @@ export interface LinkMeta {
   session_id?: string;
   /** Originating page pathname */
   ref_page?: string;
+  /** Whether this click happened while the app was in test mode (?test=true) */
+  is_test?: boolean;
   /** Allow arbitrary extension fields */
   [key: string]: unknown;
 }

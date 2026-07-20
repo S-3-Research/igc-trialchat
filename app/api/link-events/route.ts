@@ -8,6 +8,7 @@ interface LinkEventRow {
   url: string;
   url_type: string;
   meta: Record<string, unknown>;
+  is_test: boolean;
   created_at: string;
 }
 
@@ -18,15 +19,22 @@ function dateKey(iso: string): string {
 export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const days = Math.min(Math.max(parseInt(searchParams.get("days") ?? "30", 10), 1), 90);
+  const excludeTest = searchParams.get("exclude_test") !== "false";
 
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const { data: rows, error } = await supabase
+  let query = supabase
     .from("link_events")
-    .select("id, url, url_type, meta, created_at")
+    .select("id, url, url_type, meta, is_test, created_at")
     .gte("created_at", since.toISOString())
     .order("created_at", { ascending: false });
+
+  if (excludeTest) {
+    query = query.eq("is_test", false);
+  }
+
+  const { data: rows, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -78,6 +86,7 @@ export async function GET(request: Request): Promise<Response> {
 
   return NextResponse.json({
     total: events.length,
+    excludedTest: excludeTest,
     daily,
     byType,
     byRole,

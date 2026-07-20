@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { TEST_MODE_KEY } from "@/lib/guestId";
 
 type UrlType = "http" | "tel" | "mailto";
 
@@ -94,6 +95,16 @@ function RedirectContent() {
         try {
           meta.ref_page = new URL(document.referrer).pathname;
         } catch { /* ignore */ }
+      }
+
+      // Tag as test data if the app is currently in test mode (?test=true),
+      // unless the caller already set is_test explicitly.
+      if (meta.is_test === undefined) {
+        try {
+          meta.is_test = localStorage.getItem(TEST_MODE_KEY) === "1";
+        } catch {
+          meta.is_test = false;
+        }
       }
 
       try {

@@ -32,10 +32,14 @@ export async function POST(request: Request): Promise<Response> {
     const parsedBody = await request.json();
     
     // Guest users: use stable ID from request body to preserve chat history
-    // If guest_user_id is provided in the request, use it; otherwise generate a new one
+    // If guest_user_id is provided in the request, use it; otherwise generate a new one.
+    // `is_test` (set by the frontend when ?test=true was used) decides the
+    // fallback prefix (`test_` vs `guest_`) so test conversations stay tagged
+    // even if the client somehow failed to pass a stable guest_user_id.
+    const isTestRequest = parsedBody?.is_test === true;
     let effectiveUserId = userId;
     if (!userId) {
-      effectiveUserId = parsedBody?.guest_user_id || `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      effectiveUserId = parsedBody?.guest_user_id || `${isTestRequest ? "test" : "guest"}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       console.log("[create-session] Guest user ID:", effectiveUserId, parsedBody?.guest_user_id ? "(provided)" : "(generated)");
     }
     

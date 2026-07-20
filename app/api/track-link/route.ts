@@ -22,9 +22,12 @@ export async function POST(request: Request): Promise<Response> {
     return NextResponse.json({ error: "Invalid url_type" }, { status: 400 });
   }
 
+  const metaObj = (meta ?? {}) as Record<string, unknown>;
+  const isTest = metaObj.is_test === true;
+
   const { error } = await supabase
     .from("link_events")
-    .insert({ url, url_type, meta: meta ?? {} });
+    .insert({ url, url_type, meta: metaObj, is_test: isTest });
 
   if (error) {
     console.error("[track-link] Supabase insert error:", error.message);

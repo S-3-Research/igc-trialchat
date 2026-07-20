@@ -241,6 +241,7 @@ const TestSession = React.memo(function TestSession({
       body: JSON.stringify({
         workflow: { id: workflowId },
         guest_user_id: `test_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+        is_test: true,
         intake_data: intakeData,
         chatkit_configuration: { file_upload: { enabled: true } },
       }),
