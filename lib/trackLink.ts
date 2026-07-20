@@ -21,6 +21,8 @@ export interface LinkMeta {
   role?: "user" | "caregiver" | "clinician";
   /** User intent captured during intake */
   intent?: "learn" | "match" | "trial_matching";
+  /** Chat session user identifier, when available */
+  user_id?: string;
   /** ChatKit / app session identifier */
   session_id?: string;
   /** Originating page pathname */

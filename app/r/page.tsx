@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
-import { TEST_MODE_KEY } from "@/lib/guestId";
+import { GUEST_ID_KEY, TEST_MODE_KEY } from "@/lib/guestId";
 
 type UrlType = "http" | "tel" | "mailto";
 
@@ -61,17 +62,24 @@ function RedirectContent() {
   const params = useSearchParams();
   const to = params.get("to") ?? "";
   const metaRaw = params.get("meta") ?? "{}";
+  const { isLoaded, user } = useUser();
 
   const urlType = to ? getUrlType(to) : null;
   const copy = urlType ? TYPE_COPY[urlType] : TYPE_COPY.http;
 
   const [isError, setIsError] = useState(false);
+  const didTrackRef = useRef(false);
 
   useEffect(() => {
+    if (didTrackRef.current) return;
+    if (!isLoaded) return;
+
     if (!to || !urlType) {
       setIsError(true);
       return;
     }
+
+    didTrackRef.current = true;
 
     let cancelled = false;
 
@@ -95,6 +103,20 @@ function RedirectContent() {
         try {
           meta.ref_page = new URL(document.referrer).pathname;
         } catch { /* ignore */ }
+      }
+
+      if (!meta.user_id) {
+        const currentUserId = user?.id ?? (() => {
+          try {
+            return localStorage.getItem(GUEST_ID_KEY);
+          } catch {
+            return null;
+          }
+        })();
+
+        if (currentUserId) {
+          meta.user_id = currentUserId;
+        }
       }
 
       // Tag as test data if the app is currently in test mode (?test=true),
@@ -124,7 +146,7 @@ function RedirectContent() {
 
     run();
     return () => { cancelled = true; };
-  }, [to, urlType, metaRaw]);
+  }, [isLoaded, metaRaw, to, urlType, user?.id]);
 
   if (isError || !to || !urlType) {
     return (

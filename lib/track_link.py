@@ -29,6 +29,7 @@ class LinkMeta(TypedDict, total=False):
     cta: str
     role: Literal["user", "caregiver", "clinician"]
     intent: Literal["learn", "match", "trial_matching"]
+    user_id: str
     session_id: str
     ref_page: str
 
