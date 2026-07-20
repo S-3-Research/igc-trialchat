@@ -1,13 +1,12 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { disableTestMode, isTestMode, syncTestModeFromParam } from "@/lib/guestId";
 
 function TestModeBannerInner() {
   const [show, setShow] = useState(false);
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
     const testParam = searchParams.get("test");
@@ -25,13 +24,16 @@ function TestModeBannerInner() {
   const handleExit = useCallback(() => {
     disableTestMode();
     setShow(false);
-    // Strip ?test=... from the URL if present and reload so a fresh
-    // guest id (guest_ prefix) is generated on next chat session.
+    // Strip ?test=... from the URL if present and navigate there directly.
+    // (Using router.replace() followed by window.location.reload() is racy:
+    // reload() can fire before the client-side navigation has updated the
+    // address bar, so the reload happens against the old URL — which still
+    // has `?test=true` — and syncTestModeFromParam() re-enables test mode
+    // right after we just disabled it.)
     const url = new URL(window.location.href);
     url.searchParams.delete("test");
-    router.replace(url.pathname + url.search);
-    window.location.reload();
-  }, [router]);
+    window.location.href = url.pathname + url.search;
+  }, []);
 
   if (!show) return null;
 
