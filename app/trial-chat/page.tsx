@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useFontSize } from "@/contexts/FontSizeContext";
@@ -17,6 +17,15 @@ export default function Home() {
   const { fontSize, setFontSize } = useFontSize();
   const nextFontSize = { small: 'medium', medium: 'large', large: 'small' } as const;
   const fontSizeLabel = { small: 'A−', medium: 'A', large: 'A+' } as const;
+  // Read the raw query string directly from window.location instead of
+  // useSearchParams() so this doesn't force a Suspense boundary around the
+  // whole landing page during static generation.
+  const [chatHref, setChatHref] = useState("/trial-chat/chat");
+  useEffect(() => {
+    const qs = window.location.search;
+    if (qs) setChatHref(`/trial-chat/chat${qs}`);
+  }, []);
+
 
   return (
     <>
@@ -334,7 +343,7 @@ export default function Home() {
                         {/* CTA Button Area */}
                         <div className="relative z-10 flex flex-col gap-3">
                             {/* Button 1: Learn about Alzheimer’s disease */}
-                            <Link href="/trial-chat/chat" className="w-full block group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-200 to-slate-400 p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
+                            <Link href={chatHref} className="w-full block group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-200 to-slate-400 p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
                                 <div className="relative h-full w-full rounded-xl bg-slate-900 px-6 py-4 transition-all group-hover/btn:bg-slate-800">
                                     <div className="flex items-center justify-between">
                                         <span className="font-semibold text-slate-200 group-hover/btn:text-white transition-colors">Learn about Alzheimer&apos;s disease</span>
