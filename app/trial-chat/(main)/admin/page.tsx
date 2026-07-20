@@ -100,6 +100,7 @@ interface StatsData {
 
 const DAY_OPTIONS = [7, 14, 30] as const;
 type DayOption = (typeof DAY_OPTIONS)[number];
+const DAILY_CHART_HEIGHT = 160;
 
 function BreakdownBar({
   label,
@@ -184,6 +185,9 @@ export default function AdminPage() {
   if (!authed) return <AdminLogin onSuccess={() => setAuthed(true)} />;
 
   const maxDaily = data ? Math.max(...data.daily.map((d) => d.count), 1) : 1;
+  const dailyTickValues = Array.from(
+    new Set([0, 1, 2, 3, 4].map((step) => Math.round((maxDaily * step) / 4)))
+  ).sort((a, b) => a - b);
   const maxType = data ? Math.max(...Object.values(data.byType), 1) : 1;
   const maxRole = data ? Math.max(...Object.values(data.byRole), 1) : 1;
   const maxCta = data ? Math.max(...Object.values(data.byCta), 1) : 1;
@@ -304,30 +308,62 @@ export default function AdminPage() {
                 <p className="text-xs text-slate-400 py-6 text-center">No clicks recorded yet</p>
               ) : (
                 <>
-                  <div className="flex items-end gap-[2px] h-20">
-                    {data.daily.map(({ date, count }) => {
-                      const pct = maxDaily > 0 ? Math.max((count / maxDaily) * 100, count > 0 ? 5 : 0) : 0;
-                      return (
-                        <div
-                          key={date}
-                          className="flex-1 flex flex-col items-center justify-end group cursor-default"
-                          title={`${date}: ${count}`}
-                        >
-                          <div
-                            className="w-full rounded-t-[2px] bg-blue-400 dark:bg-blue-500 group-hover:bg-blue-500 dark:group-hover:bg-blue-400 transition-all duration-200"
-                            style={{ height: `${pct}%`, minHeight: count > 0 ? "3px" : "0" }}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  {data.daily.length > 0 && (
-                    <div className="flex justify-between mt-2 text-[9px] text-slate-400 tabular-nums">
-                      <span>{data.daily[0]?.date.slice(5)}</span>
-                      <span>{data.daily[Math.floor(data.daily.length / 2)]?.date.slice(5)}</span>
-                      <span>{data.daily[data.daily.length - 1]?.date.slice(5)}</span>
+                  <div className="flex gap-3">
+                    <div className="flex h-[160px] w-10 flex-col justify-between text-[9px] text-slate-400 tabular-nums">
+                      {dailyTickValues
+                        .slice()
+                        .reverse()
+                        .map((tick) => (
+                          <span key={tick} className="leading-none text-right">
+                            {tick.toLocaleString()}
+                          </span>
+                        ))}
                     </div>
-                  )}
+
+                    <div className="flex-1">
+                      <div
+                        className="relative flex items-end gap-[2px]"
+                        style={{ height: `${DAILY_CHART_HEIGHT}px` }}
+                      >
+                        {dailyTickValues
+                          .filter((tick) => tick > 0)
+                          .map((tick) => {
+                            const top = (tick / maxDaily) * 100;
+                            return (
+                              <div
+                                key={tick}
+                                className="pointer-events-none absolute left-0 right-0 border-t border-dashed border-slate-200 dark:border-slate-800"
+                                style={{ bottom: `${top}%` }}
+                              />
+                            );
+                          })}
+
+                        {data.daily.map(({ date, count }) => {
+                          const px = maxDaily > 0 ? (count / maxDaily) * DAILY_CHART_HEIGHT : 0;
+                          return (
+                            <div
+                              key={date}
+                              className="flex-1 h-full flex flex-col items-center justify-end group cursor-default relative z-10"
+                              title={`${date}: ${count}`}
+                            >
+                              <div
+                                className="w-full rounded-t-[2px] bg-blue-400 dark:bg-blue-500 group-hover:bg-blue-500 dark:group-hover:bg-blue-400 transition-all duration-200"
+                                style={{ height: `${Math.max(px, count > 0 ? 8 : 0)}px` }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {data.daily.length > 0 && (
+                        <div className="mt-2 flex items-center justify-between text-[9px] text-slate-400 tabular-nums">
+                          <span>{data.daily[0]?.date.slice(5)}</span>
+                          <span>{data.daily[Math.floor(data.daily.length / 2)]?.date.slice(5)}</span>
+                          <span>{data.daily[data.daily.length - 1]?.date.slice(5)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </>
               )}
             </div>
