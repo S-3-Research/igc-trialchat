@@ -342,7 +342,8 @@ export default function Home() {
 
                         {/* CTA Button Area */}
                         <div className="relative z-10 flex flex-col gap-3">
-                            {/* Button 1: Learn about Alzheimer’s disease */}
+                            {/* Button 1: Learn about Alzheimer's disease — hidden, kept for future re-enable */}
+                            {false && (
                             <Link href={chatHref} className="w-full block group/btn relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-200 to-slate-400 p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
                                 <div className="relative h-full w-full rounded-xl bg-slate-900 px-6 py-4 transition-all group-hover/btn:bg-slate-800">
                                     <div className="flex items-center justify-between">
@@ -353,6 +354,7 @@ export default function Home() {
                                     </div>
                                 </div>
                             </Link>
+                            )}
 
                             {/* Button 2: Match me to Trials — blue shimmer */}
                             <div className="shimmer-border-btn transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/25">
@@ -371,7 +373,8 @@ export default function Home() {
                                 </Link>
                             </div>
 
-                            {/* Button 3: Use as a clinician — tertiary */}
+                            {/* Button 3: Use as a clinician — hidden, kept for future re-enable */}
+                            {false && (
                             <button
                                 onClick={() => setShowClinicianModal(true)}
                                 className={`flex items-center justify-between w-full py-4 px-6 rounded-[10px] border transition-all focus:outline-none group/clinician ${
@@ -390,6 +393,7 @@ export default function Home() {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                 </svg>
                             </button>
+                            )}
                         </div>
 
                         {/* Space between CTA and Feature Stack */}
