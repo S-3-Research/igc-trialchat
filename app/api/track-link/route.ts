@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export const runtime = "nodejs";
 
-const VALID_TYPES = new Set(["http", "tel", "mailto"]);
+const VALID_TYPES = new Set(["http", "tel", "mailto", "sms"]);
 
 export async function POST(request: Request): Promise<Response> {
   let body: unknown;
