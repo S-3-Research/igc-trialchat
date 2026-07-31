@@ -145,6 +145,132 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   );
 }
 
+function todayISODate(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function daysAgoISODate(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
+}
+
+function DownloadModal({ onClose }: { onClose: () => void }) {
+  const [from, setFrom] = useState(daysAgoISODate(30));
+  const [to, setTo] = useState(todayISODate());
+  const [excludeTest, setExcludeTest] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleDownload() {
+    setError(null);
+    if (!from || !to) {
+      setError("Please select both start and end dates");
+      return;
+    }
+    if (from > to) {
+      setError("Start date must be before end date");
+      return;
+    }
+    setLoading(true);
+    try {
+      // 'to' is a date-only string; extend to end-of-day so that day's events are included.
+      const fromISO = new Date(`${from}T00:00:00.000Z`).toISOString();
+      const toISO = new Date(`${to}T23:59:59.999Z`).toISOString();
+      const params = new URLSearchParams({
+        from: fromISO,
+        to: toISO,
+        exclude_test: excludeTest ? "true" : "false",
+      });
+      const res = await fetch(`/api/link-events/export?${params.toString()}`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? `HTTP ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `link_events_${from}_to_${to}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      onClose();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Download failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 p-6 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-lg font-semibold text-slate-800 dark:text-white mb-1">Download raw data</h2>
+        <p className="mb-5 text-xs text-slate-500 dark:text-slate-400">Export link_events rows (all columns) as JSON</p>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">From</label>
+            <input
+              type="date"
+              value={from}
+              max={to}
+              onChange={(e) => setFrom(e.target.value)}
+              className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-500/40 transition"
+            />
+          </div>
+          <div>
+            <label className="block mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">To</label>
+            <input
+              type="date"
+              value={to}
+              min={from}
+              max={todayISODate()}
+              onChange={(e) => setTo(e.target.value)}
+              className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-500/40 transition"
+            />
+          </div>
+          <label className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 select-none cursor-pointer">
+            <input
+              type="checkbox"
+              checked={excludeTest}
+              onChange={(e) => setExcludeTest(e.target.checked)}
+              className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500/40"
+            />
+            Exclude test data
+          </label>
+
+          {error && <p className="text-xs text-red-500 dark:text-red-400">{error}</p>}
+
+          <div className="flex gap-2 pt-2">
+            <button
+              onClick={onClose}
+              className="flex-1 rounded-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-sm font-medium py-2.5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="flex-1 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 transition-colors"
+            >
+              {loading ? "Downloading\u2026" : "Download"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
@@ -159,6 +285,7 @@ export default function AdminPage() {
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -228,6 +355,22 @@ export default function AdminPage() {
               />
               Include test data
             </label>
+
+            {/* Download raw data */}
+            <button
+              onClick={() => setShowDownloadModal(true)}
+              className="p-2 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-all"
+              title="Download raw data"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+            </button>
 
             {/* Refresh */}
             <button
@@ -467,6 +610,8 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {showDownloadModal && <DownloadModal onClose={() => setShowDownloadModal(false)} />}
     </div>
   );
 }
